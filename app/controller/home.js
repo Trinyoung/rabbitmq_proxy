@@ -3,14 +3,15 @@
 const Controller = require('egg').Controller;
 
 class HomeController extends Controller {
-  async index() {
-    const { ctx } = this;
-    ctx.body = 'hi, egg';
-  }
 
   async send() {
-    const {ctx} = this;
-    ctx.service
+    const { ctx } = this;
+    await ctx.service.home.send();
+  }
+
+  async subscribe() {
+    const { ctx } = this;
+    await ctx.service.home.subscribe();
   }
 }
 

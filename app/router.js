@@ -5,6 +5,6 @@
  */
 module.exports = app => {
   const { router, controller } = app;
-  router.get('/', controller.home.index);
   router.post('/send', controller.home.send);
+  router.get('/subscribe', controller.home.subscribe);
 };

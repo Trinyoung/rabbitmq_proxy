@@ -1,3 +1,11 @@
 {
-  "extends": "eslint-config-egg"
+  "extends": "eslint-config-egg",
+  "rules": {
+    "comma-dangle": ["warn", "never"],
+    "no-unused-vars": ["warn", {
+      "vars": "local",
+      "args": "after-used"
+    }],
+    "linebreak-style":0
+  }
 }

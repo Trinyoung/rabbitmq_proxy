@@ -10,7 +10,8 @@
     "amqplib": "^0.5.3",
     "egg": "^2.15.1",
     "egg-scripts": "^2.11.0",
-    "when": "^3.7.8"
+    "when": "^3.7.8",
+    "egg-rabbitmq": "git+https://kintergration.chinacloudapp.cn:3000/cnbm/egg-rabbitmq.git"
   },
   "devDependencies": {
     "autod": "^3.0.1",
