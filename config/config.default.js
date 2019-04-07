@@ -26,7 +26,7 @@ module.exports = appInfo => {
   };
 
   config.rabbitmq = {
-    URI: 'amqp://rabbitmq:rabbitmq@kintergration.chinacloudapp.cn:5672',
+    URI: 'amqp://dev_200:dev_200@kintergration.chinacloudapp.cn:5672',
     sub: [{
       queue: { name: 'test_log_queue', keys: [ 'history.*.*', 'realtime.*.*' ], options: {}, handler: 'topic-queue1.js' },
       exchange: { name: 'topic_logs', type: 'topic', options: {} },
@@ -37,7 +37,14 @@ module.exports = appInfo => {
     pub: {
       exchange: 'topic_logs',
       type: 'topic',
-      options: {}
+      options: {
+        ip: 'kintergration.chinacloudapp.cn',
+        port: 5672,
+        host: '/dev',
+        username: 'dev_200',
+        password: 'dev_200',
+        exchange: 'message_topic_exchange'
+      }
     }
   };
 

@@ -6,7 +6,18 @@ class HomeController extends Controller {
 
   async send() {
     const { ctx } = this;
-    await ctx.service.home.send();
+    try {
+      await ctx.service.home.send();
+      ctx.body = {
+        code: 200,
+        message: 'OK'
+      };
+    } catch (err) {
+      ctx.body = {
+        code: 500,
+        error: err
+      };
+    }
   }
 
   async subscribe() {
