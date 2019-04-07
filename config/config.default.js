@@ -26,7 +26,7 @@ module.exports = appInfo => {
   };
 
   config.rabbitmq = {
-    URI: 'amqp://kintergration.chinacloudapp.cn:5672',
+    URI: 'amqp://rabbitmq:rabbitmq@kintergration.chinacloudapp.cn:5672',
     sub: [{
       queue: { name: 'test_log_queue', keys: [ 'history.*.*', 'realtime.*.*' ], options: {}, handler: 'topic-queue1.js' },
       exchange: { name: 'topic_logs', type: 'topic', options: {} },

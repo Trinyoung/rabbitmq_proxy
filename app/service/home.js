@@ -8,9 +8,10 @@ class HomeService extends Service {
     const { config, ctx } = this;
     const msg = ctx.request.body;
     const options = {
+      uri: config.rabbitmq.URI,
       connectRetries: 5
     };
-    const connection = await this.connect(config.rabbitmq.URI, options);
+    const connection = await this.connect(options, 1);
     const channel = connection.createChannel();
     const queue = config.rabbitmq.logging_queue;
     await channel.assertQueue(queue, { durable: false });
@@ -25,12 +26,25 @@ class HomeService extends Service {
   }
 
 
-  async connect(uri, options) {
+  async connect(options, connectAttempts) {
     let connection = null;
-    let connectAttempts = 1;
+    // let connectAttempts = 1;
+    console.log(options, '------------------------<');
     if (connection) return connection;
     try {
-      connection = await amqp.connect(uri);
+      // const configure = {
+      //   protocol: 'amqp',
+      //   hostname: 'kintergration.chinacloudapp',
+      //   port: 5672,
+      //   username: 'rabbitmq',
+      //   password: 'rabbitmq',
+      //   locale: 'en_US',
+      //   frameMax: 0,
+      //   heartbeat: 0,
+      //   vhost: '/',
+      // };
+      connection = await amqp.connect(options.uri);
+      console.log('here--------------------------->');
       connection.on('close', () => {
         connection = null;
         process.emitWarning('RabbitMQ-Connection-closed');
@@ -41,9 +55,10 @@ class HomeService extends Service {
       });
       return connection;
     } catch (error) {
+      console.log(error);
       if (++connectAttempts <= options.connectRetries || options.connectRetries === -1) {
-        await Promise.delay(options.connectRetryInterval);
-        return this.connect();
+        // await Promise.delay(options.connectRetryInterval);
+        return this.connect(options);
       }
       throw error;
     }
