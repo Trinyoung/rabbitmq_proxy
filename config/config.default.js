@@ -21,7 +21,7 @@ module.exports = appInfo => {
     listen: {
       path: '',
       port: 7001,
-      hostname: '127.0.0.1',
+      hostname: '127.0.0.1'
     }
   };
 
@@ -29,21 +29,17 @@ module.exports = appInfo => {
     URI: 'amqp://dev_200:dev_200@kintergration.chinacloudapp.cn:5672',
     sub: [{
       queue: { name: 'test_log_queue', keys: [ 'history.*.*', 'realtime.*.*' ], options: {}, handler: 'topic-queue1.js' },
-      exchange: { name: 'topic_logs', type: 'topic', options: {} },
+      exchange: { name: 'topic_logs', type: 'topic', options: {} }
     }, {
       queue: { name: 'test_log_queue2', keys: [ '#' ], options: {}, handler: 'topic-queue2.js' },
-      exchange: { name: 'topic_logs', type: 'topic', options: {} },
+      exchange: { name: 'topic_logs', type: 'topic', options: {} }
     }],
     pub: {
       exchange: 'topic_logs',
       type: 'topic',
-      options: {
-        ip: 'kintergration.chinacloudapp.cn',
-        port: 5672,
-        host: '/dev',
-        username: 'dev_200',
-        password: 'dev_200',
-        exchange: 'message_topic_exchange'
+      keys: {
+        sap_contract: 'realtime.sap.entity.contract',
+        kuser_contract: 'realtime.kuser.entity.contract'
       }
     }
   };
