@@ -28,8 +28,23 @@ module.exports = appInfo => {
   config.rabbitmq = {
     URI: 'amqp://dev_200:dev_200@kintergration.chinacloudapp.cn:5672/dev',
     sub: [{
-      queue: { name: 'kuser_logging_queue', keys: ['realtime.*.*.*' ], options: {}, handler: 'topic-queue.js' },
-      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} }
+      queue: { name: 'kuser_graph_queue', keys: [ '*.kuser.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} },
+    }, {
+      queue: { name: 'sap_graph_queue', keys: [ '*.sap.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} },
+    }, {
+      queue: { name: 'wms_graph_queue', keys: [ '*.wms.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} },
+    }, {
+      queue: { name: 'kuser_logging_queue', keys: [ '*.kuser.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: { durable: true } },
+    }, {
+      queue: { name: 'sap_logging_queue', keys: [ '*.sap.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: { durable: true } },
+    }, {
+      queue: { name: 'wms_logging_queue', keys: [ '*.wms.entity.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: { durable: true } },
     }, {
       queue: { name: 'test_log_queue2', keys: [ '#' ], options: {}, handler: 'topic-queue.js' },
       exchange: { name: 'message_topic_exchange', type: 'topic', options: {} }
