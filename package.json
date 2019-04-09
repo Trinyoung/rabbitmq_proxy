@@ -11,9 +11,7 @@
     "egg": "^2.15.1",
     "egg-rabbitmq": "git+https://kintergration.chinacloudapp.cn:3000/cnbm/egg-rabbitmq.git",
     "egg-scripts": "^2.11.0",
-    "lodash": "^4.17.11",
-    "request": "^2.88.0",
-    "when": "^3.7.8"
+    "lodash": "^4.17.11"
   },
   "devDependencies": {
     "autod": "^3.0.1",

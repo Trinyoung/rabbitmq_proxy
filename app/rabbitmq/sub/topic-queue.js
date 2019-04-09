@@ -1,7 +1,6 @@
 'use strict';
 
 const Subscription = require('egg').Subscription;
-const request = require('request');
 class MessageConsumer extends Subscription {
   async subscribe(message) {
     const { fields, properties, content } = message;
