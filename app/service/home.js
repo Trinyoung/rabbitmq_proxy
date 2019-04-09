@@ -4,6 +4,43 @@ const amqp = require('amqplib');
 
 const _ = require('lodash');
 class HomeService extends Service {
+  async publish() {
+    const { ctx, config, app } = this;
+    const msgs = ctx.request.body;
+    const routekey = config.rabbitmq.pub.keys;
+    const { instances, options } = config.rabbitmq.pub;
+    const result = {
+      failed: [],
+      success: []
+    };
+    for (let msg of msgs) {
+      if (instances.indexOf(msg.category) < 0) {
+        result.failed.push({
+          code: msg.code,
+          reason: 'category is wrong'
+        });
+        continue;
+      }
+      msg = _.omit(msg, [ 'category' ]);
+      let content = JSON.stringify(msg);
+      content = Buffer.from(content);
+      try {
+        await app.rabbitmq.publisher.publish(routekey, content, options);
+        ctx.logger.info(`publish msg successfully: code: ${msg.code}`);
+        result.success.push({
+          code: msg.code
+        });
+      } catch (e) {
+        ctx.logger.error(`publish msg err, code: ${msg.code}, error: ${e.toString()}`);
+        result.failed.push({
+          code: msg.code,
+          reason: e.toString()
+        });
+      }
+    }
+    return result;
+  }
+
   async send() {
     const { config, ctx } = this;
     const msgs = ctx.request.body;
@@ -22,13 +59,13 @@ class HomeService extends Service {
     }
 
     for (let msg of msgs) {
-      // const key = keys[msg.category];
-      const q = 'logging_queue';
+      const key = keys[msg.category];
+      const q = 'test_log_queue2';
       if (q) {
         msg = _.omit(msg, [ 'category' ]);
         msg = JSON.stringify(msg);
         try {
-          await channel.publish(exchange, q, Buffer.from(msg));
+          await channel.publish(exchange, key, Buffer.from(msg));
           console.log('successfully!');
         } catch (err) {
           console.error(err);
@@ -67,7 +104,6 @@ class HomeService extends Service {
       throw error;
     }
   }
-
 
 }
 

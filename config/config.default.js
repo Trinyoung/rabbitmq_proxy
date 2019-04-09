@@ -26,21 +26,21 @@ module.exports = appInfo => {
   };
 
   config.rabbitmq = {
-    URI: 'amqp://dev_200:dev_200@kintergration.chinacloudapp.cn:5672',
+    URI: 'amqp://dev_200:dev_200@kintergration.chinacloudapp.cn:5672/dev',
     sub: [{
-      queue: { name: 'test_log_queue', keys: [ 'history.*.*', 'realtime.*.*' ], options: {}, handler: 'topic-queue1.js' },
-      exchange: { name: 'topic_logs', type: 'topic', options: {} }
+      queue: { name: 'kuser_logging_queue', keys: ['realtime.*.*.*' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} }
     }, {
-      queue: { name: 'test_log_queue2', keys: [ '#' ], options: {}, handler: 'topic-queue2.js' },
-      exchange: { name: 'topic_logs', type: 'topic', options: {} }
+      queue: { name: 'test_log_queue2', keys: [ '#' ], options: {}, handler: 'topic-queue.js' },
+      exchange: { name: 'message_topic_exchange', type: 'topic', options: {} }
     }],
     pub: {
-      exchange: 'topic_logs',
+      exchange: 'message_topic_exchange',
       type: 'topic',
-      keys: {
-        sap_contract: 'realtime.sap.entity.contract',
-        kuser_contract: 'realtime.kuser.entity.contract'
-      }
+      keys: 'realtime.kuser.entity.*',
+      instances: ['contract', 'customer', '', '', ''],
+      path: '127.0.0.1:3000/home',
+      options: {}
     }
   };
 
